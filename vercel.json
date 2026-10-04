@@ -1,5 +1,9 @@
 {
-  "version": 2,
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "templates/**,static/**,warehouse.db,database.py,app.py"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
