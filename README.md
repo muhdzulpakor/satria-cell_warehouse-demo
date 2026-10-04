@@ -61,18 +61,6 @@ Sistem informasi terintegrasi untuk toko dan bengkel servis handphone **Satria C
 ### Cara 1: Menggunakan Launcher `run.bat` (Termudah di Windows)
 Cukup klik dua kali (double click) pada file **`run.bat`**. Browser akan otomatis terbuka ke `http://localhost:5000`.
 
-### Cara 2: Menjalankan via Terminal / Command Prompt
-```bash
-# Buka folder proyek
-cd "C:\Users\Muhammad Dzulfakor\.gemini\antigravity\scratch\satria-celular-warehouse"
-
-# Jalankan server
-.\.venv\Scripts\python.exe app.py
-```
-Lalu buka browser di: **`http://localhost:5000`**
-
----
-
 ## 📂 Struktur File
 
 ```
