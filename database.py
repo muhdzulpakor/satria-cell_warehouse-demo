@@ -3,10 +3,23 @@ import os
 from datetime import datetime, timedelta
 import json
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'warehouse.db')
+import shutil
+
+def get_db_path():
+    # Di Vercel Serverless, root filesystem bersifat read-only. Gunakan /tmp untuk SQLite.
+    if os.environ.get('VERCEL') == '1':
+        tmp_db = '/tmp/warehouse.db'
+        bundled_db = os.path.join(os.path.dirname(__file__), 'warehouse.db')
+        if not os.path.exists(tmp_db) and os.path.exists(bundled_db):
+            try:
+                shutil.copy2(bundled_db, tmp_db)
+            except Exception as e:
+                print("Error copying database to /tmp:", e)
+        return tmp_db
+    return os.path.join(os.path.dirname(__file__), 'warehouse.db')
 
 def get_db():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn

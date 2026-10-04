@@ -4,7 +4,12 @@ from datetime import datetime
 from flask import Flask, request, jsonify, render_template, send_from_directory
 from database import get_db, init_db
 
-app = Flask(__name__, static_folder='static', template_folder='templates')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(
+    __name__,
+    static_folder=os.path.join(BASE_DIR, 'static'),
+    template_folder=os.path.join(BASE_DIR, 'templates')
+)
 
 # Inisialisasi DB saat start jika belum ada
 init_db()
