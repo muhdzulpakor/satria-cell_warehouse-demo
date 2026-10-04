@@ -1,0 +1,21 @@
+# Virtual Environment Python (Wajib di-ignore agar repo tidak berat)
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Database lokal (opsional: biarkan jika ingin database awal ikut terupload)
+# warehouse.db
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

@@ -1,0 +1,114 @@
+/* Custom styles for Satria Celular Warehouse & Service System */
+
+/* Scrollbar halus */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Badge pulse animation untuk item kritis */
+@keyframes alertPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.pulse-danger {
+    animation: alertPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Tab Navigation Active State */
+.nav-tab.active {
+    background-color: #2563eb;
+    color: #ffffff;
+    font-weight: 600;
+}
+.nav-tab.active svg {
+    color: #ffffff;
+}
+
+/* --- PRINT RULES --- */
+@media print {
+    html, body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Sembunyikan elemen UI aplikasi saat print */
+    #sidebar, #header, #main-content, #toast-container,
+    #modal-service-detail, #modal-sparepart-form, #modal-quick-restock, #modal-print, #modal-whatsapp,
+    .no-print, header, nav {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Tampilkan wadah dan dokumen struk yang sedang dicetak */
+    #print-container,
+    .print-thermal,
+    .print-invoice,
+    .print-label {
+        display: block !important;
+        visibility: visible !important;
+        margin: 0 auto !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    /* Print Struk Thermal 80mm */
+    .print-thermal {
+        width: 76mm !important;
+        max-width: 76mm !important;
+        padding: 2mm 3mm !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-size: 11px !important;
+        line-height: 1.35 !important;
+        color: #000000 !important;
+    }
+
+    .print-thermal hr {
+        border: none !important;
+        border-top: 1px dashed #000000 !important;
+        margin: 4px 0 !important;
+    }
+
+    /* Print Nota Invoice A4/A5 */
+    .print-invoice {
+        max-width: 190mm !important;
+        padding: 8mm !important;
+        border: 1px solid #e5e7eb !important;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        color: #111827 !important;
+        font-size: 12px !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Print Stiker Label Casing HP */
+    .print-label {
+        width: 58mm !important;
+        max-width: 58mm !important;
+        height: auto !important;
+        padding: 2mm !important;
+        border: 1px dashed #000000 !important;
+        font-family: monospace !important;
+        font-size: 9px !important;
+        line-height: 1.2 !important;
+        page-break-inside: avoid !important;
+    }
+}
+
+/* Sembunyikan container cetak saat tampilan normal di layar */
+#print-container {
+    display: none;
+}

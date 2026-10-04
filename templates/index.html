@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satria Celular - Sistem Warehouse & Servis HP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/css/custom.css?v=1.2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- TOP HEADER BAR -->
+    <header id="header" class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-30 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/30">
+                    SC
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 id="store-name-display" class="font-extrabold text-lg tracking-tight text-white">SATRIA CELULAR</h1>
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Warehouse System
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400">Warehouse & Servis HP Management v1.0</p>
+                </div>
+            </div>
+
+            <!-- Header Quick Actions -->
+            <div class="flex items-center gap-2">
+                <button onclick="App.openAddSparepart()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">
+                    <span>📦</span>
+                    <span>Tambah Sparepart</span>
+                </button>
+                <button onclick="App.switchTab('new-service')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md shadow-blue-600/30 transition">
+                    <span>➕</span>
+                    <span>Terima Servis Baru</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WRAPPER WITH NAVIGATION -->
+    <div id="main-content" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="w-full md:w-64 shrink-0 space-y-4">
+            <div class="bg-white rounded-2xl p-3 shadow-sm border border-slate-200/80 space-y-1">
+                <div class="px-3 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                    Menu Utama
+                </div>
+                
+                <button data-tab="dashboard" class="nav-tab active w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
+                    <span class="text-lg">📊</span>
+                    <span>Dashboard</span>
+                </button>
+
+                <button data-tab="inventory" class="nav-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
+                    <div class="flex items-center gap-3">
+                        <span class="text-lg">📦</span>
+                        <span>Gudang Sparepart</span>
+                    </div>
+                    <span id="nav-badge-low" class="hidden text-[10px] px-1.5 py-0.5 rounded-full bg-rose-100 text-rose-700 font-bold">!</span>
+                </button>
+
+                <button data-tab="services" class="nav-tab w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
+                    <div class="flex items-center gap-3">
+                        <span class="text-lg">🔧</span>
+                        <span>Antrean Servis HP</span>
+                    </div>
+                </button>
+
+                <button data-tab="new-service" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
+                    <span class="text-lg">➕</span>
+                    <span>Terima Unit Baru</span>
+                </button>
+
+                <button data-tab="stock-logs" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
+                    <span class="text-lg">📜</span>
+                    <span>Log Mutasi Stok</span>
+                </button>
+
+                <div class="pt-3 border-t border-slate-100">
+                    <button data-tab="settings" class="nav-tab w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">
+                        <span class="text-lg">⚙️</span>
+                        <span>Pengaturan & Toko</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Info Card -->
+            <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-4 text-white shadow-sm border border-slate-800">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-300">Satria Celular</span>
+                    <span class="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/30">Workshop</span>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                    Gudang terintegrasi dengan pemotongan stok otomatis saat sparepart dipasang pada tiket servis.
+                </p>
+                <div class="flex gap-2">
+                    <button onclick="App.exportDataBackup()" class="w-full text-center text-xs bg-white/10 hover:bg-white/20 text-white font-medium py-1.5 rounded-lg transition border border-white/10">
+                        💾 Backup Data
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENT AREA -->
+        <main class="flex-1 min-w-0">
+
+            <!-- ================= TAB 1: DASHBOARD ================= -->
+            <section id="tab-dashboard" class="tab-content space-y-6">
+                <!-- Welcome Banner -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900">Halo, Satria Celular! 👋</h2>
+                        <p class="text-sm text-slate-500 mt-1">Ringkasan status gudang sparepart dan operasional servis hari ini.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="App.loadDashboard()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition flex items-center gap-1.5">
+                            <span>🔄</span>
+                            <span>Segarkan Data</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI CARDS -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Total Sparepart -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider">Item Gudang</span>
+                            <span class="p-2 rounded-xl bg-blue-50 text-blue-600 text-base">📦</span>
+                        </div>
+                        <div class="text-2xl font-black text-slate-900" id="dash-total-parts">0</div>
+                        <div class="text-xs text-slate-500 mt-1 flex items-center justify-between">
+                            <span>Fisik: <b id="dash-total-units">0 pcs</b></span>
+                            <span class="text-[11px] text-blue-600 font-semibold" id="dash-inventory-val">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <!-- Stok Menipis & Habis -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 cursor-pointer hover:border-rose-300 transition" onclick="App.switchTab('inventory'); document.getElementById('sp-low-stock-check').checked = true; App.state.activeFilters.spLowStock = true; App.loadSpareparts();">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-600">Stok Kritis</span>
+                            <span class="p-2 rounded-xl bg-rose-50 text-rose-600 text-base">⚠️</span>
+                        </div>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-black text-rose-600" id="dash-low-stock">0</span>
+                            <span class="text-xs text-rose-500 font-medium">menipis</span>
+                        </div>
+                        <div class="text-xs text-slate-500 mt-1">
+                            Habis: <b class="text-rose-600" id="dash-out-stock">0</b> item
+                        </div>
+                    </div>
+
+                    <!-- Servis Aktif -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80 cursor-pointer hover:border-blue-300 transition" onclick="App.switchTab('services')">
+                        <div class="flex items-center justify-between text-slate-500 mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Servis Aktif</span>
+                            <span class="p-2 rounded-xl bg-indigo-50 text-indigo-600 text-base">🔧</span>
+                        </div>
+                        <div class="text-2xl font-black text-slate-900" id="dash-active-services">0</div>
+                        <div class="text-xs text-slate-500 mt-1">
+                            Siap Diambil: <b class="text-emerald-600 font-bold" id="dash-ready-services">0</b> unit
+                        </div>
+                    </div>
+
+                    <!-- Pendapatan Bulan Ini -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/80">
+                        <div class="flex items-center justify-between text-slate-500 mb-1">
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600" id="dash-revenue-title">Omzet Bulan Ini</span>
+                            <select id="dash-month-select" onchange="App.loadDashboard(this.value)" class="text-[10px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg px-1.5 py-0.5 border border-slate-200 focus:outline-none cursor-pointer">
+                                <!-- Opsi bulan dinamis -->
+                            </select>
+                        </div>
+                        <div class="text-xl font-black text-emerald-600" id="dash-revenue">Rp 0</div>
+                        <div class="text-xs text-slate-500 mt-1 flex items-center justify-between">
+                            <span id="dash-completed-count">0 Unit Diambil</span>
+                            <span class="text-[10px] text-slate-400">Jasa: <b id="dash-service-fees" class="text-slate-600">Rp 0</b></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2-COLUMNS: CRITICAL SPAREPARTS & RECENT SERVICES -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Stok Kritis Table -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                    Sparepart Menipis / Perlu Restok
+                                </h3>
+                                <p class="text-xs text-slate-500">Stok berada di bawah batas minimum gudang</p>
+                            </div>
+                            <button onclick="App.switchTab('inventory')" class="text-xs text-blue-600 hover:underline font-semibold">
+                                Lihat Semua &rarr;
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto flex-1">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="text-slate-400 text-[11px] font-bold uppercase border-b pb-1">
+                                        <th class="py-2 px-3">SKU</th>
+                                        <th class="py-2 px-3">Sparepart</th>
+                                        <th class="py-2 px-3">Stok</th>
+                                        <th class="py-2 px-3">Lokasi</th>
+                                        <th class="py-2 px-3 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-critical-items" class="divide-y divide-slate-100 text-xs">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Antrean Servis Terkini -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                    Antrean Servis Terkini
+                                </h3>
+                                <p class="text-xs text-slate-500">Unit servis HP yang baru masuk / sedang ditangani</p>
+                            </div>
+                            <button onclick="App.switchTab('services')" class="text-xs text-blue-600 hover:underline font-semibold">
+                                Semua Servis &rarr;
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto flex-1">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="text-slate-400 text-[11px] font-bold uppercase border-b pb-1">
+                                        <th class="py-2 px-3">Tiket</th>
+                                        <th class="py-2 px-3">Pelanggan</th>
+                                        <th class="py-2 px-3">Unit HP</th>
+                                        <th class="py-2 px-3">Status</th>
+                                        <th class="py-2 px-3 text-right">Biaya</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-recent-services" class="divide-y divide-slate-100 text-xs">
+                                    <!-- Dynamic -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= TAB 2: GUDANG SPAREPART ================= -->
+            <section id="tab-inventory" class="tab-content hidden space-y-4">
+                <!-- Toolbar & Filters -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex flex-1 flex-wrap items-center gap-3">
+                        <!-- Search Bar -->
+                        <div class="relative flex-1 min-w-[200px]">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                🔍
+                            </span>
+                            <input type="text" id="sp-search-input" placeholder="Cari SKU, Nama Part, Model HP, Rak..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Filter Kategori -->
+                        <select id="sp-cat-filter" class="category-dropdown py-2 px-3 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Kategori</option>
+                        </select>
+
+                        <!-- Filter Merk HP -->
+                        <select id="sp-brand-filter" class="brand-dropdown py-2 px-3 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Merk</option>
+                        </select>
+
+                        <!-- Checkbox Stok Kritis -->
+                        <label class="flex items-center gap-2 text-xs font-semibold text-rose-700 bg-rose-50 px-3 py-2 rounded-xl border border-rose-200 cursor-pointer">
+                            <input type="checkbox" id="sp-low-stock-check" class="rounded text-rose-600 focus:ring-rose-500">
+                            <span>Hanya Stok Kritis</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span id="sparepart-count-badge" class="text-xs font-bold text-slate-500 px-2.5 py-1 bg-slate-100 rounded-lg">0 item</span>
+                        <button onclick="App.openAddSparepart()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                            <span>+ Tambah Sparepart</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Spareparts Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50/80 text-slate-500 text-[11px] font-bold uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="py-3 px-4">SKU / Kode</th>
+                                    <th class="py-3 px-4">Nama Sparepart & Kompatibilitas</th>
+                                    <th class="py-3 px-4">Kategori</th>
+                                    <th class="py-3 px-4">Stok Saat Ini</th>
+                                    <th class="py-3 px-4">Harga Beli / Jual</th>
+                                    <th class="py-3 px-4">Lokasi Rak</th>
+                                    <th class="py-3 px-4 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="spareparts-tbody" class="divide-y divide-slate-100 text-xs">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= TAB 3: ANTREAN SERVIS HP ================= -->
+            <section id="tab-services" class="tab-content hidden space-y-4">
+                <!-- Toolbar & Filters -->
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex flex-1 flex-wrap items-center gap-3">
+                        <!-- Search Bar -->
+                        <div class="relative flex-1 min-w-[220px]">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                🔍
+                            </span>
+                            <input type="text" id="svc-search-input" placeholder="Cari No Tiket, Nama Pelanggan, No WA, IMEI, Model HP..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <!-- Filter Status -->
+                        <select id="svc-status-filter" class="py-2 px-3 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Status Servis</option>
+                            <option value="antrean">Antrean Masuk</option>
+                            <option value="pengecekan">Diagnosis / Cek Mesin</option>
+                            <option value="konfirmasi">Menunggu Konfirmasi Biaya</option>
+                            <option value="menunggu_part">Menunggu Sparepart</option>
+                            <option value="pengerjaan">Sedang Dikerjakan</option>
+                            <option value="selesai">Selesai (Siap Diambil)</option>
+                            <option value="diambil">Sudah Diambil (Lunas)</option>
+                            <option value="dibatalkan">Dibatalkan</option>
+                        </select>
+
+                        <!-- Filter Teknisi -->
+                        <select id="svc-tech-filter" class="tech-dropdown py-2 px-3 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Semua Teknisi</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <span id="services-count-badge" class="text-xs font-bold text-slate-500 px-2.5 py-1 bg-slate-100 rounded-lg">0 tiket</span>
+                        <button onclick="App.switchTab('new-service')" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                            <span>+ Terima Servis Baru</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Services Table -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50/80 text-slate-500 text-[11px] font-bold uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="py-3 px-4">No. Tiket / Tanggal</th>
+                                    <th class="py-3 px-4">Pelanggan</th>
+                                    <th class="py-3 px-4">Unit HP & Keamanan</th>
+                                    <th class="py-3 px-4">Keluhan Kerusakan</th>
+                                    <th class="py-3 px-4">Status & Teknisi PIC</th>
+                                    <th class="py-3 px-4">Total Biaya</th>
+                                    <th class="py-3 px-4 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-tbody" class="divide-y divide-slate-100 text-xs">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= TAB 4: TERIMA SERVIS BARU ================= -->
+            <section id="tab-new-service" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                    <div class="border-b pb-4 mb-6">
+                        <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                            <span>📱</span>
+                            <span>Formulir Penerimaan Unit Servis HP Masuk</span>
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">Input data pelanggan, spesifikasi perangkat, kerusakan, dan kunci layar untuk pengetesan teknisi.</p>
+                    </div>
+
+                    <form onsubmit="event.preventDefault(); App.submitNewService();" class="space-y-6">
+                        <!-- BAGIAN 1: DATA PELANGGAN -->
+                        <div>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-3 flex items-center gap-1.5">
+                                <span>👤</span> 1. Data Pelanggan
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap *</label>
+                                    <input type="text" id="new-customer-name" required placeholder="Bpk. Hendra" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp / HP *</label>
+                                    <input type="tel" id="new-customer-phone" required placeholder="081234567890" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Singkat</label>
+                                    <input type="text" id="new-customer-address" placeholder="Jl. Merpati No. 5" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BAGIAN 2: DATA UNIT HP -->
+                        <div class="border-t pt-4">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-3 flex items-center gap-1.5">
+                                <span>📱</span> 2. Data Unit HP
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Merk HP *</label>
+                                    <input list="brand-list-datalist" id="new-device-brand" required placeholder="Samsung / iPhone / Xiaomi" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <datalist id="brand-list-datalist">
+                                        <option value="Apple / iPhone">
+                                        <option value="Samsung">
+                                        <option value="Xiaomi / Redmi / POCO">
+                                        <option value="Oppo">
+                                        <option value="Vivo">
+                                        <option value="Realme">
+                                        <option value="Infinix / Tecno">
+                                        <option value="Asus">
+                                    </datalist>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Model / Tipe HP *</label>
+                                    <input type="text" id="new-device-model" required placeholder="Galaxy A52 / iPhone 11" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Warna Unit</label>
+                                    <input type="text" id="new-device-color" placeholder="Hitam / Putih / Biru" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">No. IMEI / Serial Number</label>
+                                    <input type="text" id="new-imei-sn" placeholder="Ketik *#06# (opsional)" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-amber-700 mb-1">Kunci Layar (Pola / PIN / Sandi) *</label>
+                                    <input type="text" id="new-screen-lock" placeholder="Contoh: PIN 123456 / Pola L / Tidak Ada" class="w-full p-2.5 text-xs rounded-xl border border-amber-300 bg-amber-50/50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <span class="text-[10px] text-slate-400">Penting agar teknisi dapat mengetes fungsi layar sentuh, kamera, mic, & sensor.</span>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Kelengkapan & Kondisi Fisik Saat Masuk</label>
+                                    <input type="text" id="new-physical-condition" value="Unit Only, Layar Mulus, Bodi Pemakaian Wajar" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BAGIAN 3: KELUHAN & PENANGANAN -->
+                        <div class="border-t pt-4">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 mb-3 flex items-center gap-1.5">
+                                <span>🛠️</span> 3. Keluhan & Penugasan Teknisi
+                            </h3>
+                            <div>
+                                <label class="block text-xs font-semibold text-rose-700 mb-1">Deskripsi Kerusakan / Keluhan Pelanggan *</label>
+                                <textarea id="new-damage-desc" required rows="2" placeholder="Contoh: Layar blank hitam setelah jatuh, nada dering masih berbunyi, cas tidak masuk..." class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Teknisi PIC</label>
+                                    <select id="new-tech-id" class="tech-dropdown w-full p-2.5 text-xs rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Pilih Teknisi</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Estimasi Jasa Servis (Rp)</label>
+                                    <input type="number" id="new-service-fee" value="50000" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Uang Muka / DP (Rp)</label>
+                                    <input type="number" id="new-down-payment" value="0" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Garansi (Hari)</label>
+                                    <input type="number" id="new-warranty-days" value="30" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan Tambahan Teknisi (Internal)</label>
+                                <input type="text" id="new-tech-notes" placeholder="Catatan khusus pengerjaan atau kondisi mesin" class="w-full p-2.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end gap-3 pt-4 border-t">
+                            <button type="button" onclick="App.switchTab('services')" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs font-semibold hover:bg-slate-50 transition">
+                                Batal
+                            </button>
+                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/30 transition flex items-center gap-2">
+                                <span>Simpan & Buat Tanda Terima</span>
+                                <span>&rarr;</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ================= TAB 5: LOG MUTASI STOK ================= -->
+            <section id="tab-stock-logs" class="tab-content hidden space-y-4">
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/80 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-900">Riwayat Mutasi Stok Sparepart Gudang</h2>
+                        <p class="text-xs text-slate-500">Log pencatatan otomatis setiap ada sparepart masuk, keluar ke unit servis, atau retur.</p>
+                    </div>
+                    <button onclick="App.loadStockLogs()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+                        🔄 Refresh Log
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-slate-500 text-[11px] font-bold uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="py-3 px-4">Waktu</th>
+                                    <th class="py-3 px-4">Sparepart</th>
+                                    <th class="py-3 px-4">Jenis Mutasi</th>
+                                    <th class="py-3 px-4 text-center">Jumlah</th>
+                                    <th class="py-3 px-4">Perubahan Stok</th>
+                                    <th class="py-3 px-4">No. Ref / Tiket</th>
+                                    <th class="py-3 px-4">Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stock-logs-tbody" class="divide-y divide-slate-100 text-xs">
+                                <!-- Dynamic -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= TAB 6: PENGATURAN TOKO & MASTER ================= -->
+            <section id="tab-settings" class="tab-content hidden space-y-6">
+                <!-- Setting Profil Toko Satria Celular -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                    <div class="border-b pb-3 mb-4 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-slate-900 text-sm">Profil Toko Satria Celular</h3>
+                            <p class="text-xs text-slate-500">Informasi ini dicetak pada kop nota fisik, struk thermal, dan pesan WhatsApp.</p>
+                        </div>
+                        <button onclick="App.saveSettings()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm">
+                            💾 Simpan Profil
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Toko / Servis</label>
+                            <input type="text" id="set-name" class="w-full p-2.5 text-xs rounded-xl border border-slate-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Slogan / Tagline</label>
+                            <input type="text" id="set-tagline" class="w-full p-2.5 text-xs rounded-xl border border-slate-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Toko</label>
+                            <input type="text" id="set-address" class="w-full p-2.5 text-xs rounded-xl border border-slate-200">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp Toko</label>
+                            <input type="text" id="set-phone" class="w-full p-2.5 text-xs rounded-xl border border-slate-200">
+                            <input type="hidden" id="set-whatsapp">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan & Ketentuan Garansi pada Nota</label>
+                            <textarea id="set-warranty" rows="2" class="w-full p-2.5 text-xs rounded-xl border border-slate-200"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Master Data 3 Kolom -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Kategori -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="font-bold text-xs uppercase text-slate-700">Kategori Sparepart</h4>
+                            <button onclick="App.addNewCategory()" class="text-xs text-blue-600 hover:underline font-bold">+ Tambah</button>
+                        </div>
+                        <div id="settings-cat-list" class="space-y-1.5 flex-1 overflow-y-auto max-h-60">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+
+                    <!-- Merk HP -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="font-bold text-xs uppercase text-slate-700">Merk HP Terdaftar</h4>
+                            <button onclick="App.addNewBrand()" class="text-xs text-blue-600 hover:underline font-bold">+ Tambah</button>
+                        </div>
+                        <div id="settings-brand-list" class="flex flex-wrap gap-1.5 flex-1 overflow-y-auto max-h-60">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+
+                    <!-- Teknisi -->
+                    <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200/80 flex flex-col">
+                        <div class="flex justify-between items-center mb-3">
+                            <h4 class="font-bold text-xs uppercase text-slate-700">Daftar Teknisi</h4>
+                            <button onclick="App.addNewTechnician()" class="text-xs text-blue-600 hover:underline font-bold">+ Tambah</button>
+                        </div>
+                        <div id="settings-tech-list" class="space-y-2 flex-1 overflow-y-auto max-h-60">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- 1. MODAL DETAIL SERVIS & ALOKASI SPAREPART -->
+    <div id="modal-service-detail" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden my-auto">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <span class="p-2 rounded-xl bg-blue-600 text-white font-bold text-sm">SC</span>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="font-extrabold text-base" id="dtl-ticket">SC-XXXX</h3>
+                            <span class="text-xs text-slate-400" id="dtl-created-at">--</span>
+                        </div>
+                        <p class="text-xs text-slate-400" id="dtl-device">Model HP</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="App.openPrintModal(App.state.selectedService.id)" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border border-slate-700">
+                        <span>🖨️ Cetak Nota</span>
+                    </button>
+                    <button onclick="App.closeModal('modal-service-detail')" class="text-slate-400 hover:text-white text-xl px-2 font-bold">&times;</button>
+                </div>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+                <!-- Info Pelanggan & Unit Box -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Data Pelanggan</div>
+                        <div class="font-bold text-slate-800 text-sm mt-0.5" id="dtl-customer">-</div>
+                        <div class="text-slate-500 mt-0.5" id="dtl-customer-address">-</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] uppercase font-bold text-slate-400">Keamanan & Fisik Unit</div>
+                        <div class="text-slate-700 mt-0.5">IMEI / SN: <b id="dtl-imei" class="font-mono">-</b></div>
+                        <div class="text-amber-800 mt-0.5">Kunci Layar: <b id="dtl-screen-lock" class="font-mono bg-amber-100 px-1.5 py-0.5 rounded">-</b></div>
+                        <div class="text-slate-500 text-[11px] mt-0.5" id="dtl-physical">-</div>
+                    </div>
+                    <div class="md:col-span-2 pt-2 border-t border-slate-200">
+                        <div class="text-[10px] uppercase font-bold text-rose-600">Keluhan Kerusakan:</div>
+                        <div class="text-slate-800 font-medium text-xs mt-0.5 bg-rose-50/60 p-2 rounded border border-rose-100" id="dtl-damage">-</div>
+                    </div>
+                </div>
+
+                <!-- ALOKASI SPAREPART GUDANG (AUTO POTONG STOK) -->
+                <div class="bg-blue-50/40 p-4 rounded-xl border border-blue-200/80 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-bold text-slate-900 flex items-center gap-1.5">
+                                <span>📦</span> Sparepart Gudang yang Terpasang
+                            </h4>
+                            <p class="text-[11px] text-slate-500">Stok gudang langsung dipotong saat part ditambahkan ke servis ini.</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] text-slate-500">Subtotal Sparepart:</span>
+                            <div class="font-bold text-slate-900 text-sm" id="dtl-parts-sum">Rp 0</div>
+                        </div>
+                    </div>
+
+                    <!-- Input Pasang Part Baru -->
+                    <div class="flex flex-col sm:flex-row gap-2 bg-white p-2.5 rounded-lg border border-blue-200 shadow-sm">
+                        <select id="add-part-select" class="flex-1 p-2 text-xs rounded border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <!-- Populated dynamically -->
+                        </select>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="add-part-qty" value="1" min="1" class="w-16 p-2 text-xs rounded border border-slate-300 text-center font-bold">
+                            <button type="button" onclick="App.addPartToCurrentService()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold transition whitespace-nowrap shadow-sm">
+                                + Pasang Part
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List Part Terpasang -->
+                    <div id="dtl-parts-list" class="bg-white p-3 rounded-lg border border-slate-200">
+                        <!-- Dynamic -->
+                    </div>
+                </div>
+
+                <!-- STATUS, TEKNISI & BIAYA -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Workflow Status -->
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Status Pengerjaan</label>
+                        <select id="dtl-status-select" class="w-full p-2.5 rounded-xl border border-slate-200 bg-white font-semibold">
+                            <option value="antrean">Antrean Masuk</option>
+                            <option value="pengecekan">Diagnosis / Cek Mesin</option>
+                            <option value="konfirmasi">Menunggu Konfirmasi Pelanggan</option>
+                            <option value="menunggu_part">Menunggu Sparepart</option>
+                            <option value="pengerjaan">Sedang Dikerjakan</option>
+                            <option value="selesai">Selesai (Siap Diambil)</option>
+                            <option value="diambil">Sudah Diambil (Lunas)</option>
+                            <option value="dibatalkan">Dibatalkan</option>
+                        </select>
+                    </div>
+
+                    <!-- Teknisi PIC -->
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Teknisi PIC</label>
+                        <select id="dtl-tech-select" class="tech-dropdown w-full p-2.5 rounded-xl border border-slate-200 bg-white font-semibold">
+                            <option value="">Belum Ditugaskan</option>
+                        </select>
+                    </div>
+
+                    <!-- Masa Garansi -->
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Masa Garansi (Hari)</label>
+                        <input type="number" id="dtl-warranty" value="30" class="w-full p-2.5 rounded-xl border border-slate-200">
+                    </div>
+                </div>
+
+                <!-- Perhitungan Finansial -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-slate-600 mb-1">Tarif Jasa Servis (Rp)</label>
+                            <input type="number" id="dtl-service-fee" oninput="App.updateServiceDetailTotals()" class="w-full p-2 rounded-lg border border-slate-200 font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-slate-600 mb-1">Diskon / Potongan (Rp)</label>
+                            <input type="number" id="dtl-discount" oninput="App.updateServiceDetailTotals()" class="w-full p-2 rounded-lg border border-slate-200 font-semibold text-rose-600">
+                        </div>
+                        <div>
+                            <label class="block text-slate-600 mb-1">Uang Muka / DP (Rp)</label>
+                            <input type="number" id="dtl-down-payment" oninput="App.updateServiceDetailTotals()" class="w-full p-2 rounded-lg border border-slate-200 font-semibold text-emerald-600">
+                        </div>
+                        <div>
+                            <label class="block text-slate-600 mb-1">Status Pembayaran</label>
+                            <select id="dtl-payment-status" class="w-full p-2 rounded-lg border border-slate-200 font-semibold">
+                                <option value="belum_lunas">Belum Lunas</option>
+                                <option value="dp">Ada DP</option>
+                                <option value="lunas">Lunas</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t flex justify-between items-center text-sm">
+                        <div class="text-slate-600">
+                            Total Tagihan: <b id="dtl-grand-total" class="text-blue-700 font-black text-base">Rp 0</b>
+                        </div>
+                        <div class="text-slate-600">
+                            Sisa Pembayaran: <b id="dtl-remaining-pay" class="text-rose-600 font-black text-base">Rp 0</b>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Catatan Teknis -->
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Catatan Pengerjaan Teknisi</label>
+                    <input type="text" id="dtl-tech-notes" placeholder="Contoh: Sudah dites display, TrueTone aktif, arus cas 1.5A normal..." class="w-full p-2.5 rounded-xl border border-slate-200">
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+                <button type="button" onclick="App.openWhatsAppPrompt(App.state.selectedService.customer_phone, App.state.selectedService.customer_name, App.state.selectedService.ticket_number, App.state.selectedService.device_brand + ' ' + App.state.selectedService.device_model, App.state.selectedService.status, App.state.selectedService.total_cost)" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <span>💬 Kirim Update WhatsApp</span>
+                </button>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="App.closeModal('modal-service-detail')" class="px-4 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-semibold transition">
+                        Tutup
+                    </button>
+                    <button type="button" onclick="App.saveServiceDetailChanges()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL FORM TAMBAH/EDIT SPAREPART -->
+    <div id="modal-sparepart-form" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-xl w-full p-6 space-y-4 text-xs">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 id="sp-form-title" class="font-bold text-base text-slate-900">Tambah Sparepart Baru ke Gudang</h3>
+                <button onclick="App.closeModal('modal-sparepart-form')" class="text-slate-400 hover:text-slate-600 text-lg font-bold">&times;</button>
+            </div>
+
+            <form onsubmit="event.preventDefault(); App.submitSparepartForm();" class="space-y-4">
+                <input type="hidden" id="sp-form-id">
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kode SKU / Part Number *</label>
+                        <input type="text" id="sp-form-sku" required placeholder="LCD-IP11-OEM" class="w-full p-2.5 rounded-xl border border-slate-200 uppercase font-mono">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Nama Sparepart *</label>
+                        <input type="text" id="sp-form-name" required placeholder="LCD iPhone 11 Incell Crown" class="w-full p-2.5 rounded-xl border border-slate-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Kategori</label>
+                        <select id="sp-form-category" class="category-dropdown w-full p-2.5 rounded-xl border border-slate-200 bg-white">
+                            <option value="">Pilih Kategori</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Merk HP</label>
+                        <select id="sp-form-brand" class="brand-dropdown w-full p-2.5 rounded-xl border border-slate-200 bg-white">
+                            <option value="">Pilih Merk</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Model HP yang Kompatibel</label>
+                    <input type="text" id="sp-form-models" placeholder="iPhone 11 (A2111, A2223, A2221)" class="w-full p-2.5 rounded-xl border border-slate-200">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Stok Awal</label>
+                        <input type="number" id="sp-form-stock" value="1" min="0" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Batas Minimum Stok (Alert)</label>
+                        <input type="number" id="sp-form-min-stock" value="2" min="1" class="w-full p-2.5 rounded-xl border border-slate-200">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Harga Beli / Modal (Rp)</label>
+                        <input type="number" id="sp-form-cost" value="0" class="w-full p-2.5 rounded-xl border border-slate-200">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Harga Jual / Pasang (Rp)</label>
+                        <input type="number" id="sp-form-sell" value="0" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold text-blue-700">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Lokasi Rak / Box</label>
+                        <input type="text" id="sp-form-location" placeholder="Rak A-02 / Box LCD" class="w-full p-2.5 rounded-xl border border-slate-200">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">Catatan Tambahan</label>
+                        <input type="text" id="sp-form-notes" placeholder="Kualitas grade A / garansi tes" class="w-full p-2.5 rounded-xl border border-slate-200">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3 border-t">
+                    <button type="button" onclick="App.closeModal('modal-sparepart-form')" class="px-4 py-2 border border-slate-300 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-sm transition">
+                        Simpan ke Gudang
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. MODAL QUICK RESTOCK -->
+    <div id="modal-quick-restock" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-sm w-full p-5 space-y-4 text-xs">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-bold text-sm text-slate-900">Restok Sparepart Masuk</h3>
+                <button onclick="App.closeModal('modal-quick-restock')" class="text-slate-400 hover:text-slate-600 font-bold">&times;</button>
+            </div>
+
+            <input type="hidden" id="restock-part-id">
+
+            <div>
+                <span class="text-slate-500">Nama Barang:</span>
+                <div class="font-bold text-slate-800 text-sm" id="restock-part-name">-</div>
+                <div class="text-[11px] text-slate-500 mt-1">Stok Saat Ini: <b id="restock-current-stock" class="text-slate-800">-</b></div>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-700 mb-1">Jumlah Tambahan Barang Masuk *</label>
+                <input type="number" id="restock-qty" min="1" value="5" class="w-full p-2.5 rounded-xl border border-slate-200 font-bold text-base text-center">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-700 mb-1">Keterangan / Supplier</label>
+                <input type="text" id="restock-notes" value="Restok dari supplier" class="w-full p-2.5 rounded-xl border border-slate-200">
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t">
+                <button type="button" onclick="App.closeModal('modal-quick-restock')" class="px-3 py-2 border rounded-xl font-semibold text-slate-700 hover:bg-slate-50">
+                    Batal
+                </button>
+                <button type="button" onclick="App.submitQuickRestock()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm">
+                    + Tambah ke Stok
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MODAL PRINT PREVIEW -->
+    <div id="modal-print" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-3xl w-full p-6 space-y-4 flex flex-col my-auto max-h-[90vh]">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-3">
+                    <span class="text-lg">🖨️</span>
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-900">Cetak Dokumen Servis</h3>
+                        <p class="text-xs text-slate-500">Pilih format cetak sesuai kebutuhan printer toko.</p>
+                    </div>
+                </div>
+                <button onclick="App.closeModal('modal-print')" class="text-slate-400 hover:text-slate-600 font-bold text-lg">&times;</button>
+            </div>
+
+            <!-- Format Selector -->
+            <div class="flex gap-2">
+                <button onclick="App.renderPrintPreview('thermal')" class="flex-1 py-2 px-3 rounded-xl border text-xs font-bold hover:bg-blue-50 focus:bg-blue-600 focus:text-white transition">
+                    🧾 Struk Kasir (80mm)
+                </button>
+                <button onclick="App.renderPrintPreview('invoice')" class="flex-1 py-2 px-3 rounded-xl border text-xs font-bold hover:bg-blue-50 focus:bg-blue-600 focus:text-white transition">
+                    📄 Nota Faktur (A4 / A5)
+                </button>
+                <button onclick="App.renderPrintPreview('label')" class="flex-1 py-2 px-3 rounded-xl border text-xs font-bold hover:bg-blue-50 focus:bg-blue-600 focus:text-white transition">
+                    🏷️ Label Casing HP
+                </button>
+            </div>
+
+            <!-- Preview Box -->
+            <div id="print-preview-content" class="flex-1 overflow-y-auto bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <!-- Dynamic Preview -->
+            </div>
+
+            <div class="flex justify-end gap-2 pt-3 border-t">
+                <button onclick="App.closeModal('modal-print')" class="px-4 py-2 border rounded-xl font-semibold text-slate-700 hover:bg-slate-50 text-xs">
+                    Tutup
+                </button>
+                <button onclick="App.executePrint()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-sm flex items-center gap-1.5">
+                    <span>🖨️ Cetak Sekarang</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. MODAL WHATSAPP INTEGRATION -->
+    <div id="modal-whatsapp" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-4 text-xs">
+            <div class="flex justify-between items-center border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="p-1.5 rounded-lg bg-emerald-500 text-white font-bold">WA</span>
+                    <h3 class="font-bold text-sm text-slate-900">Kirim Update WhatsApp ke Pelanggan</h3>
+                </div>
+                <button onclick="App.closeModal('modal-whatsapp')" class="text-slate-400 hover:text-slate-600 font-bold">&times;</button>
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-700 mb-1">Nomor WhatsApp Tujuan</label>
+                <input type="text" id="wa-target-phone" class="w-full p-2.5 rounded-xl border border-slate-200 font-mono font-bold">
+            </div>
+
+            <div>
+                <label class="block font-semibold text-slate-700 mb-1">Isi Pesan WhatsApp</label>
+                <textarea id="wa-message-content" rows="6" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs leading-relaxed"></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2 border-t">
+                <button onclick="App.closeModal('modal-whatsapp')" class="px-4 py-2 border rounded-xl font-semibold text-slate-700 hover:bg-slate-50">
+                    Batal
+                </button>
+                <button onclick="App.sendWhatsAppDirect()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm flex items-center gap-1.5">
+                    <span>Kirim via WhatsApp &rarr;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none">
+        <!-- Dynamic Toasts -->
+    </div>
+
+    <!-- PRINT CONTAINER (HANYA MUNCUL SAAT PRINT FISIK) -->
+    <div id="print-container"></div>
+
+    <!-- SCRIPTS -->
+    <script src="/static/js/app.js?v=1.4"></script>
+</body>
+</html>
